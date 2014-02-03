@@ -98,6 +98,8 @@ class mce(object):
         return func.__doc__
 
     commands = [
+        "fillpoint",      
+
         "clone",
         "fill",
         "replace",
@@ -387,6 +389,34 @@ class mce(object):
 
         self.needsSave = True
         print "Filled {0} blocks.".format("all" if box is None else box.volume)
+
+    def _fillpoint(self, command):
+	"""
+	fillpoint <blockType> [ <point> ]
+	
+	Fills a block with whatever material chosen.
+	Made to remove necessity of " 1 1 1 " when wanting
+	to fill one block at a time
+	"""
+	command.append( "1")	
+	command.append( "1")
+	command.append( "1")	
+	if len(command) == 0:
+	    self.printUsage("fill")
+	    return
+	blockInfo = self.readBlockInfo(command)
+	
+        if len(command):
+            box = self.readBox(command)
+        else:
+            box = None
+
+        print "Filling with {0}".format(blockInfo.name)
+
+        self.level.fillBlocks(box, blockInfo)
+
+        self.needsSave = True
+        print "Filled {0} blocks.".format("all" if box is None else box.volume)	
 
     def _replace(self, command):
         """
