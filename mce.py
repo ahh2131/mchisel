@@ -98,6 +98,7 @@ class mce(object):
         return func.__doc__
 
     commands = [
+        "clean",
         "fillpoint",      
 
         "clone",
@@ -389,7 +390,40 @@ class mce(object):
 
         self.needsSave = True
         print "Filled {0} blocks.".format("all" if box is None else box.volume)
+   
+    def _clean(self, command):
+	"""
+	Assumes player name is Player
+	cleans flatland, run after every time an object is created and map is exported
+	"""
+	command.append("0")
+	command.append("Player")
+	command.append("delta")
+	command.append("-100")
+	command.append("-1")
+	command.append("-100")
+	command.append("200")
+	command.append("200")
+	command.append("200")
+	if len(command) == 0:
+	    self.printUsage("fill")
+	    return
+	blockInfo = self.readBlockInfo(command)
+	
+        if len(command):
+            box = self.readBox(command)
+        else:
+            box = None
 
+        print "Filling with {0}".format(blockInfo.name)
+
+        self.level.fillBlocks(box, blockInfo)
+
+        self.needsSave = True
+        print "Filled {0} blocks.".format("all" if box is None else box.volume)	
+
+
+ 
     def _fillpoint(self, command):
 	"""
 	fillpoint <blockType> [ <point> ]
