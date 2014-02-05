@@ -1,2 +1,6 @@
-numpy
-pyyaml
+PyOpenGL==3.1.0a3
+PyYAML==3.10
+mercurial==2.8.2
+numpy==1.8.0
+pygame==1.9.2a0
+wsgiref==0.1.2
